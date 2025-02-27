@@ -41,5 +41,5 @@ jobs:
         context: .
         push: true
         tags: |
-          registry.cn-hangzhou.aliyuncs.com/docker_lixun/esshs-java:latest
-          registry.cn-hangzhou.aliyuncs.com/docker_lixun/esshs-java:${{ github.sha }}
+          registry.ap-southeast-1.aliyuncs.com/docker_lixun/esshs-java:latest
+          registry.ap-southeast-1.aliyuncs.com/docker_lixun/esshs-java:${{ github.sha }}
