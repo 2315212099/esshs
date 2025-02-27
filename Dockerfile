@@ -14,4 +14,4 @@ EXPOSE 8080
 ENV SPRING_PROFILES_ACTIVE=prod
 
 # 设置容器启动时运行的命令
-ENTRYPOINT ["java", "-jar", "app"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
