@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: esshs
+  datasource:
+    url: jdbc:mysql://proiect-mysql:3306/esshs?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: redis
+      password: 123
+      port: 6379
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: 10000ms
+          max-idle: 8
+          min-idle: 0
+        shutdown-timeout: 0
+
+server:
+  port: ${SERVER_PORT:8080}
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      update-strategy: not_null
+      id-type: auto
+
+knife4j:
+  enable: false    # 生产环境关闭接口文档
+  production: true # 生产环境开启屏蔽
+  setting:
+    language: zh_cn
+    swagger-model-name: 实体类列表
