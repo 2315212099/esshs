@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # 复制 Maven 构建的 jar 文件到容器中
-COPY esshs-java.jar app.jar
+COPY target/*.jar app.jar
 
 # 暴露端口
 EXPOSE 8080
