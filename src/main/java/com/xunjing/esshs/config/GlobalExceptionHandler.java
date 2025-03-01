@@ -11,8 +11,8 @@ import java.sql.SQLException;
 
 @RestControllerAdvice(annotations = {RestController.class, Controller.class})
 public class GlobalExceptionHandler {
-//    @ExceptionHandler(SQLException.class)
-//    public Result<String> mysqlHandler(SQLException sqlException){
-//        return Result.error("数据填写有误");
-//    }
+   @ExceptionHandler(SQLException.class)
+    public Result<String> mysqlHandler(SQLException sqlException){
+        return Result.error("数据填写有误");
+    }
 }

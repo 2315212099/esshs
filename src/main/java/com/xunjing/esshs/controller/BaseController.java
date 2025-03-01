@@ -2,6 +2,7 @@ package com.xunjing.esshs.controller;
 
 import com.xunjing.esshs.domain.po.Result;
 import com.xunjing.esshs.service.BaseService;
+import com.xunjing.esshs.utils.EmailUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Slf4j
 public class BaseController {
+    private final EmailUtil emailUtil;
     private final BaseService baseService;
     @GetMapping("/text")
     @Operation(summary = "测试接口")

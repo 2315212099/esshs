@@ -6,15 +6,21 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xunjing.esshs.domain.dto.BookingDto;
 import com.xunjing.esshs.domain.dto.PageDto;
 import com.xunjing.esshs.domain.enums.BookingStatusEnum;
+import com.xunjing.esshs.domain.po.AdminEmails;
 import com.xunjing.esshs.domain.po.Booking;
 import com.xunjing.esshs.domain.po.Result;
 import com.xunjing.esshs.domain.vo.PageVo;
 import com.xunjing.esshs.mapper.BookingMapper;
 import com.xunjing.esshs.service.IBookingService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xunjing.esshs.utils.DateUtil;
+import com.xunjing.esshs.utils.EmailUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -27,20 +33,42 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class BookingServiceImpl extends ServiceImpl<BookingMapper, Booking> implements IBookingService {
-
+    private final EmailUtil emailUtil;
+    private final AdminEmails adminEmails;
+    private final DateUtil dateUtil;
     @Override
     public Result booking(BookingDto bookingDto) {
         Booking booking = BeanUtil.copyProperties(bookingDto, Booking.class);
         List<Booking> list = lambdaQuery().eq(Booking::getPhone, bookingDto.getPhone()).list();
         if (ObjectUtil.isEmpty(list)) {
             save(booking);
+            sendAdminEmails(booking);
             return Result.success();
+
         }
         return Result.error("请勿重复预约");
 
     }
+    @Async("sendAdminEmailsExecutor")
+    protected void sendAdminEmails(Booking booking){//给管理员发送预约提醒
+        List<String> admin = adminEmails.getAdmin();
+        if(admin.isEmpty()){
+            return;
+        }
+        String name = booking.getName();
+        String phone = booking.getPhone();
+        LocalDateTime beginTime = booking.getBeginTime();
+        LocalDateTime endTime = booking.getEndTime();
+        admin.forEach(s->{
+            String top="预约提醒";
 
+            String msg=name+"同学已预约;联系电话:"+phone+"书本重量:"+booking.getBookWeight()+"kg;期望上门时间:"+dateUtil.getDateTime(String.valueOf(beginTime))+"----"+dateUtil.getDateTime(String.valueOf(endTime));
+            emailUtil.sendEmail(s,top,msg);
+        });
+
+    }
     @Override
     public Result finishedById(int id) {
         Booking booking = getById(id);

@@ -1,4 +1,10 @@
 spring:
+  qq:
+    username: 3970363733@qq.com
+    password: wxjyokxvooipceia
+    admin:
+      - 2315212099@qq.com
+      - l3377580541@qq.com
   application:
     name: esshs
   datasource:
