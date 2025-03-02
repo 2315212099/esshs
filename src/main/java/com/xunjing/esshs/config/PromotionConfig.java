@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 public class PromotionConfig {
 
-    @Bean
+    @Bean(name = "sendAdminEmailsExecutor")
     public Executor sendAdminEmailsExecutor(){
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         // 1.核心线程池大小
